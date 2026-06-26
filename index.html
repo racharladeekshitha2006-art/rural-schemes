@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AP Scheme Connect - Rural India Government Schemes Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f4f8fb;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f4c81, #1d7cd6);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.3rem;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      max-width: 850px;
+      margin: auto;
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1250px;
+      margin: 30px auto;
+    }
+
+    .top-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .top-section h2 {
+      margin-bottom: 10px;
+      color: #0f4c81;
+    }
+
+    .search-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      align-items: center;
+    }
+
+    .search-filter input {
+      flex: 1;
+      min-width: 250px;
+      padding: 14px;
+      border: 1px solid #cfd8e3;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .filter-btn {
+      border: none;
+      background: #e7f1fb;
+      color: #0f4c81;
+      padding: 10px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #0f4c81;
+      color: white;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin: 25px 0;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 1.8rem;
+      color: #0f4c81;
+      margin-bottom: 8px;
+    }
+
+    .stat-card p {
+      color: #4b5563;
+      font-weight: 600;
+    }
+
+    .schemes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .scheme-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      border-left: 6px solid #1d7cd6;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .scheme-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+
+    .scheme-card h3 {
+      color: #0f4c81;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e7f1fb;
+      color: #0f4c81;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .scheme-card p {
+      margin-bottom: 10px;
+      color: #374151;
+      font-size: 0.95rem;
+    }
+
+    .scheme-card strong {
+      color: #111827;
+    }
+
+    .apply-link {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      background: #0f4c81;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .apply-link:hover {
+      background: #0b3b64;
+    }
+
+    .section-card {
+      background: white;
+      margin-top: 30px;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .section-card h2 {
+      color: #0f4c81;
+      margin-bottom: 15px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 15px;
+    }
+
+    .step {
+      background: #f7fbff;
+      border: 1px solid #d9e9f7;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .step h4 {
+      color: #0f4c81;
+      margin-bottom: 8px;
+    }
+
+    .no-results {
+      text-align: center;
+      margin-top: 30px;
+      color: #6b7280;
+      font-size: 1.05rem;
+      display: none;
+    }
+
+    footer {
+      margin-top: 40px;
+      background: #0f4c81;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>AP Scheme Connect</h1>
+    <p>
+      A Rural India Government Schemes Portal for Andhra Pradesh that helps citizens discover welfare schemes,
+      understand eligibility, and access official application portals based on their category such as farmers,
+      women, students, pensioners, health beneficiaries, and self-employment applicants.
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="top-section">
+      <h2>Find the Right Government Scheme</h2>
+      <p>
+        Search for Andhra Pradesh government schemes by scheme name, beneficiary category, or purpose.
+        This portal is designed to make welfare access easier for rural communities.
+      </p>
+
+      <div class="search-filter">
+        <input type="text" id="searchInput" placeholder="Search by scheme name, category, benefit or eligibility..." />
+      </div>
+
+      <div class="filter-buttons" id="filterButtons">
+        <button class="filter-btn active" data-category="All">All</button>
+        <button class="filter-btn" data-category="Farmer">Farmer</button>
+        <button class="filter-btn" data-category="Women">Women</button>
+        <button class="filter-btn" data-category="Student">Student</button>
+        <button class="filter-btn" data-category="Health">Health</button>
+        <button class="filter-btn" data-category="Housing">Housing</button>
+        <button class="filter-btn" data-category="Pension">Pension</button>
+        <button class="filter-btn" data-category="Employment">Employment</button>
+        <button class="filter-btn" data-category="Community Welfare">Community Welfare</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3 id="schemeCount">10+</h3>
+        <p>Key AP Schemes</p>
+      </div>
+      <div class="stat-card">
+        <h3>9+</h3>
+        <p>Beneficiary Categories</p>
+      </div>
+      <div class="stat-card">
+        <h3>Rural Focus</h3>
+        <p>Citizen-Friendly Access</p>
+      </div>
+      <div class="stat-card">
+        <h3>Official Links</h3>
+        <p>Easy Scheme Navigation</p>
+      </div>
+    </div>
+
+    <div class="schemes-grid" id="schemesGrid"></div>
+    <div class="no-results" id="noResults">No matching schemes found.</div>
+
+    <div class="section-card">
+      <h2>How This Portal Helps Rural Citizens</h2>
+      <div class="steps">
+        <div class="step">
+          <h4>1. Search by Need</h4>
+          <p>Citizens can search for schemes related to education, farming, health, housing, pensions, and self-employment.</p>
+        </div>
+        <div class="step">
+          <h4>2. Understand Eligibility</h4>
+          <p>Each scheme card clearly shows who can apply, what benefits are provided, and the main target group.</p>
+        </div>
+        <div class="step">
+          <h4>3. Visit Official Portal</h4>
+          <p>Users can directly open the official application or information page from the scheme card.</p>
+        </div>
+        <div class="step">
+          <h4>4. Improve Awareness</h4>
+          <p>This project can reduce the information gap between government welfare schemes and rural beneficiaries.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>Project Objective</h2>
+      <p>
+        The objective of this project is to bridge the information gap between rural citizens and Andhra Pradesh
+        government welfare schemes by presenting scheme details in a simple, searchable, and category-based portal.
+        It helps users identify which scheme is suitable for them and where they can apply.
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>AP Scheme Connect | Community Service Project | Rural India & Andhra Pradesh Government Schemes Portal</p>
+  </footer>
+
+  <script>
+    const schemes = [
+      {
+        name: "NTR Bharosa Pension Scheme",
+        category: "Pension",
+        group: "Senior citizens, widows, disabled persons, vulnerable citizens",
+        benefit: "Monthly social security pension support for eligible beneficiaries.",
+        eligibility: "Eligible pension categories as notified by the Andhra Pradesh government.",
+        apply: "https://sspensions.ap.gov.in/"
+      },
+      {
+        name: "Dr. NTR Vaidya Seva",
+        category: "Health",
+        group: "Poor and eligible families needing medical treatment",
+        benefit: "Cashless health services for eligible beneficiaries through empanelled hospitals.",
+        eligibility: "Eligible families under the scheme norms of Andhra Pradesh.",
+        apply: "https://drntrvaidyaseva.ap.gov.in/asri"
+      },
+      {
+        name: "AP Housing Schemes",
+        category: "Housing",
+        group: "Housing beneficiaries, low-income and eligible families",
+        benefit: "Housing support and beneficiary services under Andhra Pradesh housing programs.",
+        eligibility: "Eligible beneficiaries under AP housing and housing-for-all related programs.",
+        apply: "https://housing.ap.gov.in/"
+      },
+      {
+        name: "JnanaBhumi Scholarships",
+        category: "Student",
+        group: "Students from eligible categories such as SC, ST, BC, EBC, Minority and others under scheme norms",
+        benefit: "Scholarships, fee reimbursement, and student support services.",
+        eligibility: "Eligible students under AP scholarship and reimbursement norms.",
+        apply: "https://jnanabhumi.ap.gov.in/"
+      },
+      {
+        name: "YSR Rythu Bharosa",
+        category: "Farmer",
+        group: "Farmers and agriculture families",
+        benefit: "Financial support and agricultural assistance for eligible farmers.",
+        eligibility: "Eligible farmer families as per Andhra Pradesh government guidelines.",
+        apply: "https://palnadu.ap.gov.in/navaratnalu/"
+      },
+      {
+        name: "YSR Cheyutha",
+        category: "Women",
+        group: "Women beneficiaries from eligible social categories",
+        benefit: "Financial support for women livelihood and empowerment.",
+        eligibility: "Eligible women under the Andhra Pradesh government norms for the scheme.",
+        apply: "https://wdcw.ap.gov.in/"
+      },
+      {
+        name: "Amma Vodi / Student Education Support",
+        category: "Student",
+        group: "Mothers / guardians of school-going children under eligible categories",
+        benefit: "Financial support to encourage children’s education.",
+        eligibility: "Eligible school-going beneficiaries as per AP government education support rules.",
+        apply: "https://palnadu.ap.gov.in/navaratnalu/"
+      },
+      {
+        name: "AP OBMMS Self Employment Schemes",
+        category: "Employment",
+        group: "SC, ST, BC, Minority, Kapu, EBC and other eligible beneficiaries",
+        benefit: "Self-employment and economic support schemes in business, transport, agriculture and services.",
+        eligibility: "Eligibility varies by corporation and scheme category such as age, income, caste/community and BPL status.",
+        apply: "https://apobmms.apcfss.in/"
+      },
+      {
+        name: "Chief Minister Relief Fund (CMRF)",
+        category: "Health",
+        group: "Needy persons facing medical emergencies or distress",
+        benefit: "Financial support for emergency, medical and hardship situations.",
+        eligibility: "Case-based assistance as per CMRF norms.",
+        apply: "https://apcmrf.ap.gov.in/"
+      },
+      {
+        name: "BC / SC / Minority / Community Welfare Support",
+        category: "Community Welfare",
+        group: "Backward classes, minority communities, socially and economically weaker groups",
+        benefit: "Education, livelihood, scholarship, and welfare support through respective welfare departments.",
+        eligibility: "Depends on the welfare department and scheme guidelines.",
+        apply: "https://apobmms.apcfss.in/"
+      }
+    ];
+
+    const schemesGrid = document.getElementById("schemesGrid");
+    const searchInput = document.getElementById("searchInput");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const noResults = document.getElementById("noResults");
+    const schemeCount = document.getElementById("schemeCount");
+
+    let selectedCategory = "All";
+
+    function renderSchemes() {
+      const searchText = searchInput.value.toLowerCase().trim();
+
+      const filtered = schemes.filter(scheme => {
+        const matchesCategory =
+          selectedCategory === "All" || scheme.category === selectedCategory;
+
+        const text = `
+          ${scheme.name}
+          ${scheme.category}
+          ${scheme.group}
+          ${scheme.benefit}
+          ${scheme.eligibility}
+        `.toLowerCase();
+
+        const matchesSearch = text.includes(searchText);
+
+        return matchesCategory && matchesSearch;
+      });
+
+      schemesGrid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+
+      filtered.forEach(scheme => {
+        const card = document.createElement("div");
+        card.className = "scheme-card";
+
+        card.innerHTML = `
+          <h3>${scheme.name}</h3>
+          <div class="badge">${scheme.category}</div>
+          <p><strong>Target Group:</strong> ${scheme.group}</p>
+          <p><strong>Benefits:</strong> ${scheme.benefit}</p>
+          <p><strong>Eligibility:</strong> ${scheme.eligibility}</p>
+          <a class="apply-link" href="${scheme.apply}" target="_blank">View Official Portal</a>
+        `;
+
+        schemesGrid.appendChild(card);
+      });
+
+      schemeCount.textContent = schemes.length + "+";
+    }
+
+    searchInput.addEventListener("input", renderSchemes);
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedCategory = button.dataset.category;
+        renderSchemes();
+      });
+    });
+
+    renderSchemes();
+  </script>
+
+</body>
+</html>
